@@ -17,5 +17,3 @@ app.listen(3003, () => {
 })
 
 export default app;
-
-
