@@ -12,12 +12,14 @@ class EntitiesFactory {
         return truck;
     }
 
-    async createParcel() {
+    async createParcel(truckId) {
+        const data = {
+            weight: 100,
+            cargo: "Electronics",
+        }
+        if (truckId) { data.truck_id = truckId; }
         const parcel = await prisma.parcel.create({
-            data: {
-                weight: 100,
-                cargo: "Electronics",
-            }
+            data: data
         })
         return parcel;
     }

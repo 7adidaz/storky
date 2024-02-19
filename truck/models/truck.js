@@ -22,7 +22,7 @@ class Truck {
                         select: {
                             id: true,
                             weight: true,
-                            cargo
+                            cargo: true
                         }
                     }
                 }
@@ -41,7 +41,7 @@ class Truck {
                     select: {
                         id: true,
                         weight: true,
-                        cargo
+                        cargo: true
                     }
                 }
             }

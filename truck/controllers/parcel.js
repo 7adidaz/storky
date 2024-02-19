@@ -1,4 +1,5 @@
 import P from '../models/parcel';
+import prisma from '../util/prisma';
 const Parcel = new P();
 
 async function getParcels(req, res) {
@@ -25,7 +26,7 @@ async function loadParcel(req, res) {
 }
 
 async function unloadParcel(req, res) {
-    const parcelId = parseInt(req.params.id);
+    const parcelId = parseInt(req.body.parcelId);
     const parcel = await Parcel.unloadParcel(parcelId);
     res.json(parcel);
 }

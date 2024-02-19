@@ -9,7 +9,7 @@ class Parcel {
             cargo: cargo,
         }
         if (truckId) {
-            data.truckId = truckId;
+            data.truck_id = truckId;
         }
         const parcel = await prisma.parcel.create({
             data: data
@@ -19,6 +19,7 @@ class Parcel {
 
     async getParcels() {
         const parcels = await prisma.parcel.findMany();
+        console.log(parcels);
         return parcels;
     }
 
@@ -46,7 +47,7 @@ class Parcel {
                 id: parcelId
             },
             data: {
-                truckId: truckId
+                truck_id: truckId
             }
         });
         return parcel;
@@ -58,7 +59,7 @@ class Parcel {
                 id: parcelId
             },
             data: {
-                truckId: null
+                truck_id: null
             }
         });
         return parcel;
