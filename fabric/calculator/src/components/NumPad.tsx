@@ -1,11 +1,20 @@
+import { useContext } from "react";
 import "./components.css";
+import * as n from "./source";
+import { LanguageContext } from "../i8n/LanguageContext";
 export default function NumPad() {
-    const numbers = [
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9],
-        ['.', 0, ',']
-    ];
+
+    const languageContext = useContext(LanguageContext);
+    if (!languageContext) { return null; }
+
+    const { language, setLanguage } = languageContext;
+
+    const changeLanguage = (lng: string) => {
+        setLanguage(lng);
+    };
+
+    const numbers = language === "en" ? n.englishNumbers : n.arabicNumbers;
+
     return (
         <div className='container-div'>
             {numbers.map((row, i) => (
@@ -17,5 +26,4 @@ export default function NumPad() {
             ))}
         </div>
     )
-
 }

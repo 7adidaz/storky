@@ -1,12 +1,14 @@
+import { useContext } from 'react';
 import './components.css'
+import * as f from './source';
+import { LanguageContext } from '../i8n/LanguageContext';
 export default function Advanced() {
-    const functions = [
-        ['sin', '!'],
-        ['cos', 'e',],
-        ['tan', 'ln'],
-        ['pi', 'log'],
-        ['sqr', 'x^2']
-    ];
+    const languageContext = useContext(LanguageContext);
+    if (!languageContext) { return null; }
+
+    const { language, setLanguage } = languageContext;
+    const functions = language === "en" ? f.englishFunctions : f.arabicFunctions;
+
 
     return (
         <div className='container-div'>
