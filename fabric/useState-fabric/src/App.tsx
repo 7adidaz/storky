@@ -7,6 +7,9 @@ function App() {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
   const [draw, setDraw] = useState<boolean>(false);
 
+  const [showGrid, setShowGrid] = useState(false);
+  const [gridGroup, setGridGroup] = useState<fabric.Group | null>(null);
+
   useEffect(() => {
     const canvas = new fabric.Canvas('canvas', {
       width: 800,
@@ -57,10 +60,6 @@ function App() {
     setCanvas(newCanvs);
   }
 
-  const [showGrid, setShowGrid] = useState(false);
-  const [gridGroup, setGridGroup] = useState<fabric.Group | null>(null);
-
-  //toggle a 2d grid on the canvas
   const handleGrid = () => {
     if (showGrid) {
       if (gridGroup) {
