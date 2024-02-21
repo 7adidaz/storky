@@ -1,0 +1,23 @@
+.container-div{
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.btn {
+    flex: 1;
+}
+
+.btn-div{
+    flex: 1;
+    display: flex;
+    gap: 1px;
+}
+
+button {
+  text-align: center;
+}
+
+.result {
+  border-bottom: 2px solid black;
+}

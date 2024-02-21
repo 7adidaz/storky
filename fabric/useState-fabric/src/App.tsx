@@ -85,11 +85,10 @@ function App() {
   }
 
   const handleSympols = (op: string) => {
-    // can be extended more 
     let link;
-    if (op == "diff") link = "src/diff.png";
-    else if (op == "int") link = "src/int.png";
-    else if (op == "sum") link = "src/sum.png";
+    if (op == "diff") link = "src/assets/diff.png";
+    else if (op == "int") link = "src/assets/int.png";
+    else if (op == "sum") link = "src/assets/sum.png";
 
     fabric.Image.fromURL(link, (img) => {
       img.scale(0.2);

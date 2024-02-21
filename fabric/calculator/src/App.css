@@ -1,0 +1,32 @@
+.main-app{
+  display: grid;
+  grid-template-columns: 0.8fr 1.4fr 0.8fr;
+  grid-template-rows: 1fr 2fr ;
+  margin: 10px;
+  gap: 8px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "result result result"
+    "adv numbad operations";
+  
+  padding: 3px;
+  border: 1px solid black;
+  background-color: dimgray;
+}
+
+
+.adv {
+  grid-area: adv;
+}
+
+.result {
+  grid-area: result;
+}
+
+.operations {
+  grid-area: operations;
+}
+
+.numbad {
+  grid-area: numbad;
+}
