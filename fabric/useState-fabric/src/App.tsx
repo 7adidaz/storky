@@ -2,13 +2,9 @@ import { useEffect, useState } from 'react'
 import { fabric } from 'fabric'
 import { getGridLines, getHeight, ruler, } from './fabric-components';
 import './app.css';
+import Cookies from 'js-cookie';
 import { emitAdd, emitDelete, emitEdit, emitMouse, handleAdd, handleEdit, handleMouse, handleRemove, socket } from './socket';
 
-// declare module 'fabric' {
-//   interface Object {
-//     id: number
-//   }
-// }
 
 function App() {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
@@ -94,7 +90,7 @@ function App() {
   useEffect(function mouseEvents() {
     document.addEventListener("mousemove", (event) => {
       const { clientX, clientY } = event;
-      emitMouse({ x: clientX, y: clientY, id: socketId, name: "abdo" })
+      emitMouse({ x: clientX, y: clientY, id: socketId, name: Cookies.get("name") })
     }, false);
   }, [])
 
@@ -208,7 +204,7 @@ function App() {
     <>
       <h1>Canvas</h1>
       <div className='btn-cntr'>
-        <button onClick={() => toggleDraw()}>Draw</button>
+        <button onClick={toggleDraw}>Draw</button>
         <button onClick={() => handleBrushSizeIncrease()}>+</button>
         <button onClick={() => handleBrushSizeDecrease()}>-</button>
         <button onClick={() => handleDeleteSelection()}>Delete selected</button>
@@ -222,6 +218,7 @@ function App() {
       </div>
       <canvas id="canvas"></canvas>
     </>
+
   )
 }
 
