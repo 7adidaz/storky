@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 import { fabric } from 'fabric'
 import { getGridLines, getHeight, ruler, } from './fabric-components';
 import './app.css';
-import { emitAdd, emitEdit, handleAdd, socket } from './socket';
+import { emitAdd, emitDelete, emitEdit, emitMouse, handleAdd, handleEdit, handleMouse, handleRemove, socket } from './socket';
 
-const name = {
-  first: "John",
-  last: "Doe"
-}
-
+// declare module 'fabric' {
+//   interface Object {
+//     id: number
+//   }
+// }
 
 function App() {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
@@ -17,12 +17,11 @@ function App() {
 
   const [showGrid, setShowGrid] = useState(false);
   const [gridGroup, setGridGroup] = useState<fabric.Group | null>(null);
-
   const [isConnected, setIsConnected] = useState(socket.connected);
 
   useEffect(() => {
     function onConnect() {
-      console.log("connect");
+      // console.log("connect");
       setIsConnected(true);
     }
 
@@ -33,7 +32,7 @@ function App() {
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
     socket.on("id", (id) => {
-      console.log("id: ", id);
+      // console.log("id: ", id);
       setSocketId(id);
     })
 
@@ -47,40 +46,60 @@ function App() {
   useEffect(() => {
     if (!canvas) return;
     socket.on('new-add', (data) => {
-      console.log("new add");
+      // console.log("new add");
       let canva = canvas;
       canva = handleAdd(data, canva);
       setCanvas(canva);
     });
 
     socket.on('new-edit', (data) => {
-      console.log("new edit");
+      // console.log("new edit");
       let canva = canvas;
-      canva = handleAdd(data, canva);
+      canva = handleEdit(data, canva);
       setCanvas(canva);
     });
 
-    canvas.on("path:created", (e) => {
-      console.log("path created");
-      e.id = Math.floor(Math.random() * 100);
-      emitAdd(e);
+    socket.on("new-delete", (data) => {
+      // console.log("new delete");
+      let canva = canvas;
+      canva = handleRemove(data, canva);
+      setCanvas(canva);
     })
 
-    // object modified
     canvas.on("object:modified", (e) => {
-      console.log("object modified");
+      // console.log("object modified");
       emitEdit(e.target);
     })
 
     canvas.on("object:added", (e) => {
-      console.log("object added");
-      e.id = Math.floor(Math.random() * 10000);
+      // console.log("object added");
+      if (e.target.id) return;
+      e.target.id = Math.floor(Math.random() * 10000);
       emitAdd(e.target);
+    })
+
+    canvas.on("object:removed", (e) => {
+      emitDelete(e.target);
+    })
+
+    socket.on("new_mouse_pos", (e) => {
+      // console.log("new mouse pos");
+      let canva = canvas;
+      canva = handleMouse(e, canva);
+      setCanvas(canva);
     })
 
   }, [canvas])
 
+  useEffect(function mouseEvents() {
+    document.addEventListener("mousemove", (event) => {
+      const { clientX, clientY } = event;
+      emitMouse({ x: clientX, y: clientY, id: socketId, name: "abdo" })
+    }, false);
+  }, [])
+
   useEffect(function initCanvas() {
+    // console.log("init");
     const canvas = new fabric.Canvas('canvas', {
       width: 800,
       height: 600,
@@ -121,7 +140,7 @@ function App() {
   }
 
   const addTringle = () => {
-    console.log("add tringle");
+    // console.log("add tringle");
     const newCanvs = canvas;
 
     const input = prompt("Enter the sides of the triangle in the following format: x,y,z", "20,20,20");
@@ -133,10 +152,7 @@ function App() {
       height: getHeight(sides),
     })
 
-    // triangle.id = Math.floor(Math.random() * 100);
-
     canvas?.add(triangle);
-    // emitAdd(triangle);
     setCanvas(newCanvs);
   }
 
@@ -172,11 +188,9 @@ function App() {
     fabric.Image.fromURL(link, (img) => {
       img.scale(0.2);
 
+      // img.id = Math.floor(Math.random() * 10000);
       const newCanvas = canvas;
-      img.id = Math.floor(Math.random() * 100);
-
       newCanvas?.add(img);
-      socket.emit("add", img);
       setCanvas(newCanvas);
     });
   }
