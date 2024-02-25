@@ -25,7 +25,7 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('new_mouse_pos', data);
   });
 
-  socket.emit('id', {});
+  socket.emit('id', socket.id);
 });
 
 io.listen(3000);
