@@ -74,6 +74,7 @@ function App() {
 
     canvas.on("object:added", (e) => {
       console.log("object added");
+      e.id = Math.floor(Math.random() * 10000);
       emitAdd(e.target);
     })
 
@@ -132,10 +133,10 @@ function App() {
       height: getHeight(sides),
     })
 
-    triangle.id = Math.floor(Math.random() * 100);
+    // triangle.id = Math.floor(Math.random() * 100);
 
     canvas?.add(triangle);
-    emitAdd(triangle);
+    // emitAdd(triangle);
     setCanvas(newCanvs);
   }
 
